@@ -1,0 +1,276 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<h1 class="text-center text-primary">Calculate!</h1>
+<div class="container d-flex justify-content-center">
+    <div class="row">
+        <form class="form-group-lg form-inline">
+            <div class="input-group mb-3">
+                @*<input type="text" id="Result" name="Result" class="focusedInput form-control" disabled>*@
+                <span id="Result" name="Result" class="form-control text-end">0</span>
+            </div>
+            <div class="mb-1">
+                <button class="btn btn-warning btn-lg container-fluid btn-clear" type="button">C</button>
+            </div>
+            <div class="container-fluid d-flex justify-content-center">
+               
+                <table>
+                    <tr class="border-2 border-white">
+                        <td class="border-2 border-white">
+                            <div class="col-xs-1 col-xs-offset-4">
+                                <button class="btn btn-lg btn-primary container-fluid bracket" type="button">(</button>
+                            </div>
+                        </td>
+                        <td class="border-2 border-white">
+                            <div class="col-xs-1">
+                                <button class="btn btn-lg btn-primary container-fluid bracket" type="button">)</button>
+                            </div>
+                        </td>
+                        <td class="border-2 border-white">
+                            <div class="col-xs-1">
+                                <button class="btn btn-lg btn-primary container-fluid" type="button">^</button>
+                            </div>
+                        </td>
+                        <td class="border-2 border-white">
+                            <div>
+                                <button class="btn btn-lg btn-primary container-fluid btn-back" type="button">&#9003</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="border-2 border-white">
+                        <td class="border-2 border-white">
+                            <div class="col-xs-1 col-xs-offset-4">
+                                <button class="btn btn-lg btn-primary container-fluid" type="button">7</button>
+                            </div>
+                        </td>
+                        <td class="border-2 border-white">
+                            <div class="col-xs-1">
+                                <button class="btn btn-lg btn-primary container-fluid" type="button">8</button>
+                            </div>
+                        </td>
+                        <td class="border-2 border-white">
+                            <div class="col-xs-1">
+                                <button class="btn btn-lg btn-primary container-fluid" type="button">9</button>
+                            </div>
+                        </td>
+                        <td class="border-2 border-white">
+                            <div class="col-xs-1">
+                                <button class="btn btn-lg btn-primary container-fluid" type="button">/</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="border-2 border-white">
+                        <td class="border-2 border-white">
+                            <div class="col-xs-1 col-xs-offset-4">
+                                <button class="btn btn-lg btn-primary container-fluid" type="button">4</button>
+                            </div>
+                        </td>
+                        <td class="border-2 border-white">
+                            <div class="col-xs-1">
+                                <button class="btn btn-lg btn-primary container-fluid" type="button">5</button>
+                            </div>
+                        </td>
+                        <td class="border-2 border-white">
+                            <div class="col-xs-1">
+                                <button class="btn btn-lg btn-primary container-fluid" type="button">6</button>
+                            </div>
+                        </td>
+                        <td class="border-2 border-white">
+                            <div class="col-xs-1">
+                                <button class="btn btn-lg btn-primary container-fluid" type="button">*</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="border-2 border-white">
+                        <td class="border-2 border-white">
+                            <div class="col-xs-1 col-xs-offset-4">
+                                <button class="btn btn-lg btn-primary container-fluid" type="button">1</button>
+                            </div>
+                        </td>
+                        <td class="border-2 border-white">
+                            <div class="col-xs-1">
+                                <button class="btn btn-lg btn-primary container-fluid" type="button">2</button>
+                            </div>
+                        </td>
+                        <td class="border-2 border-white">
+                            <div class="col-xs-1">
+                                <button class="btn btn-lg btn-primary container-fluid" type="button">3</button>
+                            </div>
+                        </td>
+                        <td class="border-2 border-white">
+                            <div class="col-xs-1">
+                                <button class="btn btn-lg btn-primary container-fluid" type="button">-</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="border-2 border-white">
+                        <td class="border-2 border-white">
+                            <div class="col-xs-1 col-xs-offset-4">
+                                <button class="btn btn-lg btn-primary container-fluid" type="button">0</button>
+                            </div>
+                        </td>
+                        <td class="border-2 border-white">
+                            <div class="col-xs-1">
+                                <button class="btn btn-lg btn-primary container-fluid" type="button">.</button>
+                            </div>
+                        </td>
+                        <td class="border-2 border-white">
+                            <div class="col-xs-1">
+                                <button class="btn btn-lg btn-primary container-fluid" id="calculateButton" type="button">=</button>
+                            </div>
+                        </td>
+                        <td class="border-2 border-white">
+                            <div class="col-xs-1">
+                                <button class="btn btn-lg btn-primary container-fluid" type="button">+</button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function ()
+        {
+
+            $(".col-xs-1").click(function ()
+            {
+                if($(this).text().trim() !== "="){
+                    var text = $(this).text().toString()
+                    $("#Result").text(function (i, val) {
+                        var currentText = $("#Result").text()
+
+                        if (currentText.trim() == "-" && text.trim().match(/[\+\*\^\./]/)) {
+                            return
+                        }
+
+                        if (text.trim().match(/[\+\*\^\.\-/]/) && $("#Result").text().slice(-1).match(/[\-]/) && $("#Result").text().slice(-2).match(/[\(]/)) {
+                            return
+                        }
+
+                        if (currentText.trim() == "0" && !text.trim().match(/[\+\*\^\)\./]/)) {
+                            currentText = text.trim();
+                        }
+                        else{
+                            currentText = $("#Result").text() + text.trim()
+                        }
+
+                        // проверка на введенние подряд нескольких знаков операции
+                        if (text.trim().match(/[\+\*\^\.\-/]/) && $("#Result").text().slice(-1).match(/[\+\-\*\^\./]/)) {
+                            currentText = currentText.slice(0, -2);
+                            currentText = currentText + text.trim()
+                        }
+                        else if (text.trim().match(/[\+\*\^\./]/) && $("#Result").text().slice(-1).match(/[\(]/)) {
+                            currentText = currentText.slice(0, -1);
+                        }
+                        else if (text.trim().match(/[\)]/) && $("#Result").text().slice(-1).match(/[\+\*\^\.\-/]/))
+                        {
+                            currentText = currentText.slice(0, -1);
+                        }
+                        
+                        // проверка на пустые скобки
+                        if (text.trim().match(/[\)]/) && $("#Result").text().slice(-1).match(/[\(]/)) {
+                            currentText = currentText.slice(0, -1);
+                        }
+
+                        var openBracketsCount = (currentText.match(/\(/g) || []).length;
+                        var closeBracketsCount = (currentText.match(/\)/g) || []).length;
+
+                        if (closeBracketsCount > openBracketsCount) {
+                            currentText = currentText.slice(0, -1);
+                        }
+
+                        // проверка на добавление более одной точки в одно число
+                        var regex = /(\d*\.?\d+)|[\+\-\*/]/g;
+                        var matches = currentText.match(regex);
+                        if (matches) {
+                            var lastMatch = matches[matches.length - 1];
+                            if (lastMatch.indexOf('.') >= 0 && text.trim() === '.') {
+                                currentText = currentText.slice(0, -1);
+                            }
+                        }
+
+                        currentText = currentText.replace(/(\d)(\()/g, "$1*$2");
+                        currentText = currentText.replace(/\)(\d)/g, ')*$1');
+                        currentText = currentText.replace(/\)\(/g, ")*(")
+
+                        return currentText;
+                    });
+                }
+            })
+
+            $(".btn-clear").click(function () {
+                $("#Result").text("0");
+            })
+
+            $(".btn-back").click(function () {
+                var currentText = $("#Result").text();
+                if ($("#Result").text() != "0" && $("#Result").text().length > 1) {
+                    $("#Result").text(currentText.slice(0, -1));
+                }
+                else if ($("#Result").text().length === 1)
+                {
+                    $("#Result").text("0");
+                }
+            })
+
+            $("#calculateButton").click(function () {
+                var resultValue = $("#Result").text();
+
+                var openBracketsCount = (resultValue.match(/\(/g) || []).length;
+                var closeBracketsCount = (resultValue.match(/\)/g) || []).length;
+
+                // добавление недостающие закрывающие скобки, если необходимо
+                if (openBracketsCount > closeBracketsCount) {
+                    var missingBrackets = openBracketsCount - closeBracketsCount;
+
+                    alert("Unclosed brackets. Please close all brackets.")
+                    return
+
+                    for (var i = 0; i < missingBrackets; i++) {
+                        resultValue += ')';
+                    }
+                }
+
+                if ($("#Result").text().slice(-1).match(/[\+\*\^\.\-/]/)){
+                    alert("No digit after sign")
+                    return
+                }
+
+                //if ($("#Result").text().slice(-1) == "0" && $("#Result").text().slice(-2).match(/[/]/))
+                //{
+                //    alert("Division by 0")
+                //    return
+                //}
+
+                $.ajax({
+                    type: "POST",
+                    url: "Home/Index",
+                    data: { Result: resultValue },
+                    dataType: "json",
+                    success: function (data) {
+                        if(data.result == "Error"){
+                            alert(data.result)
+                        }
+                        else if (data.result == "Division by 0") {
+                            alert("Error. " + data.result)
+                        }
+                        else{
+                            $("#Result").text(data.result);
+                        }
+                    },
+                    error: function () {
+                        alert("An error occurred during calculation.");
+                    }
+                });
+            });
+            
+        });
+    </script>
+}
